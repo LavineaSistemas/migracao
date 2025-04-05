@@ -1,0 +1,83 @@
+@{
+    ViewData["Title"] = ViewBag.Titulo;
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">@ViewBag.Titulo</div>
+        <div class="d-flex float-end">
+            <button class="btn btn-info" onclick="cadastrar()" title="Adicionar Usuário"><i class="fa fa-plus-square"></i></button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <select class="select2 mr-5" id="local" asp-items="@ViewBag.Locais"></select>
+                    </div>
+                    <div class="col-4">
+                        <a class="btn btn-info" id="carregar" href=""> Carregar colunas</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>CPF</th>
+                <th>Nome</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model != null)
+            {
+                @foreach (var i in Model)
+                {
+                    <tr>
+                        <td>@i.id</td>
+                        <td>@i.cpf</td>
+                        <td>@i.nome</td>
+                        <td align="center">
+                            <div class="btn-group">
+                                <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="true">
+                                    <i class="fa fa-cogs"></i>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="Usuarios" asp-action="FormInfoCart" asp-route-id="@i.id" asp-route-mode="1" data-toggle="tooltip" data-placement="top" title="Editar">
+                                            <i class="fa fa-edit"></i>
+                                            <span>Editar</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        @if (ViewBag.MsgToast != null)
+        {
+            @:console.log = 'oi';
+        }
+        
+        $('#local').change(function (){
+            var valorSelecionado = this.value;
+            var botao = $('#carregar');
+            var hrefCarrega ='/Nascimento/CarregarColunas?idLocal=';
+            var novoHrefCarrega = hrefCarrega + valorSelecionado;
+            botao.attr('href', novoHrefCarrega);
+            console.log(novoHrefCarrega);
+        });
+    </script>
+}

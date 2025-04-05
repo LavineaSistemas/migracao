@@ -1,0 +1,106 @@
+@model IEnumerable<Ligth.Models.Usuarios>
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Lista de Usuários</div>
+        <div class="d-flex float-end">
+            <button class="btn btn-info" onclick="cadastrar()" title="Adicionar Usuário"><i class="fa fa-plus-square"></i></button>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>CPF</th>
+                <th>Nome</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model != null)
+            {
+                @foreach (var i in Model)
+                {
+                    <tr>
+                        <td>@i.id</td>
+                        <td>@i.cpf</td>
+                        <td>@i.nome</td>
+                        <td align="center">
+                            <div class="btn-group">
+                                <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="true">
+                                    <i class="fa fa-cogs"></i>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-controller="Usuarios" asp-action="FormInfoCart" asp-route-id="@i.id" asp-route-mode="1" data-toggle="tooltip" data-placement="top" title="Editar">
+                                            <i class="fa fa-edit"></i>
+                                            <span>Editar</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/msgtoast.js"></script>
+    <script>
+        function cadastrar() {
+            Swal.fire({
+                title: 'Cadastrar Usuário',
+                html: `
+                  <input type="text" id="nome" class="swal2-input" placeholder="Nome">
+                  <input type="text" id="cpf" class="swal2-input" placeholder="CPF">
+                  <select  id="perfil" class="swal2-input" placeholder="Perfil">
+                    <option value="ADM">Administrador</option>
+                    <option value="VIEW">Visualizador</option>
+                  </select>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Confirmar',
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    const nome = Swal.getPopup().querySelector('#nome').value;
+                    const cpf = Swal.getPopup().querySelector('#cpf').value;
+                    const perfil = Swal.getPopup().querySelector('#perfil').value;
+                    if (!nome || !cpf || !perfil) {
+                        Swal.showValidationMessage('Por favor, preencha todos os campos');
+                    }
+                    return { nome: nome, cpf: cpf, perfil: perfil };
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result != null) {
+                    $.ajax({
+                        url: '/Usuarios/AddUsuario',
+                        type: 'post',
+                        data: JSON.stringify({ nome: result.value.nome, cpf: result.value.cpf, perfil: result.value.perfil }),
+                        contentType: "application/json; charset=UTF-8",
+                        success: function (data) {
+                            table.clear().draw();
+                            table.destroy();
+                            CarregaTabela(sup);
+                            Msgtoast('Usuário cadastrado com sucesso', 1);
+                        },
+                        error: function () {
+                            Msgtoast('Oops! Algo não saiu bem', 2);
+                        }
+                    });
+                }
+            });
+        }
+
+        var table = null;
+        if (table == null) {
+            CarregaTabela(sup);
+        }
+        
+        
+    </script>
+}
