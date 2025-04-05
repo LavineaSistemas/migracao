@@ -27,7 +27,7 @@ public class NascimentoController : Controller
         try
         {
             var local = new LocalDAO().GetLocal(idLocal);
-            var dir = new DiretorioDAO().getDiretorioNascimento(local.Id);
+            var dir = $"wwwroot/arquivos/{local.Schema}/NASC.TXT";
             _logger.LogInformation($"Base de dados: {local.Schema} - Diretorio arquivo: {dir}");
             using (StreamReader leitor = new StreamReader(dir, Encoding.GetEncoding("ISO-8859-1")))
             {

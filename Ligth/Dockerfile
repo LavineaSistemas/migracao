@@ -1,22 +1,14 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-ARG BUILD_CONFIGURATION=Release
+﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /src
-COPY ["Ligth/Ligth.csproj", "Ligth/"]
-RUN dotnet restore "Ligth/Ligth.csproj"
-COPY . .
-WORKDIR "/src/Ligth"
-RUN dotnet build "Ligth.csproj" -c $BUILD_CONFIGURATION -o /app/build
+COPY ./LigthPub .
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Ligth.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Configura o locale para pt_BR.UTF-8
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+	&& localedef -i pt_BR -c -f UTF-8 -A /usr/share/locale/locale.alias pt_BR.UTF-8
+ENV LANG pt_BR.UTF-8
+ENV LC_ALL pt_BR.UTF-8
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+ENV TZ=America/Porto_Velho
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 ENTRYPOINT ["dotnet", "Ligth.dll"]
