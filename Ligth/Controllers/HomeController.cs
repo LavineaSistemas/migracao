@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
+using Ligth.Dao;
 using Microsoft.AspNetCore.Mvc;
 using Ligth.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ligth.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

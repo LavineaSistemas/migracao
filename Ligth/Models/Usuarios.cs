@@ -8,4 +8,7 @@ public class Usuarios
     public string senha { get; set; }
     public bool status { get; set; }
     public string perfil { get; set; }
+    public int id_local { get; set; }
+    public string nova { get; set; }
+    public string novarepete { get; set; }
 }

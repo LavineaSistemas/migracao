@@ -61,6 +61,10 @@
                     <option value="ADM">Administrador</option>
                     <option value="VIEW">Visualizador</option>
                   </select>
+                  <select  id="id_local" class="swal2-input" placeholder="Local">
+                    <option value="1">jordao</option>
+                    <option value="2">santarosa</option>
+                  </select>
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Confirmar',
@@ -69,10 +73,11 @@
                     const nome = Swal.getPopup().querySelector('#nome').value;
                     const cpf = Swal.getPopup().querySelector('#cpf').value;
                     const perfil = Swal.getPopup().querySelector('#perfil').value;
-                    if (!nome || !cpf || !perfil) {
+                    const id_local = Swal.getPopup().querySelector('#id_local').value;
+                    if (!nome || !cpf || !perfil || !id_local) {
                         Swal.showValidationMessage('Por favor, preencha todos os campos');
                     }
-                    return { nome: nome, cpf: cpf, perfil: perfil };
+                    return { nome: nome, cpf: cpf, perfil: perfil, id_local: id_local };
                 },
                 allowOutsideClick: () => !Swal.isLoading()
             }).then((result) => {
@@ -80,7 +85,7 @@
                     $.ajax({
                         url: '/Usuarios/AddUsuario',
                         type: 'post',
-                        data: JSON.stringify({ nome: result.value.nome, cpf: result.value.cpf, perfil: result.value.perfil }),
+                        data: JSON.stringify({ nome: result.value.nome, cpf: result.value.cpf, perfil: result.value.perfil, id_local: result.value.id_local }),
                         contentType: "application/json; charset=UTF-8",
                         success: function (data) {
                             table.clear().draw();

@@ -1,5 +1,6 @@
 using Dapper;
 using Ligth.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Ligth.Dao;
 
@@ -80,7 +81,49 @@ public class NascimentoDAO
     {
         using (var _db = new DBDapper().getCon)
         {
-            return _db.QueryFirst<int>(@"select nascimento from {db}.controle_registro where id=1;");
+            return _db.QueryFirst<int>($"select nascimento from {db}.controle_registro where id=1;");
+        }
+    }
+    
+    public IEnumerable<SelectListItem> GetAllLivros(string db)
+    {
+        using (var _db = new DBDapper().getCon)
+        {
+            return _db.Query<Nascimento>($"select numlivro from {db}.nascimentos group by numlivro order by numlivro;")
+                .Select(x => new SelectListItem { Text = x.numlivro, Value = x.numlivro });
+        }
+    }
+
+    public IEnumerable<Nascimento> ListaNascimentoFiltro(string filter, int initialPage, int pageSize,
+        out int recordsTotal, out int recordsFiltered, string id, string db)
+    {
+        List<Nascimento> recs = new List<Nascimento>();
+        List<Nascimento> recTB = new List<Nascimento>();
+
+        if (!string.IsNullOrWhiteSpace(filter))
+        {
+            filter = "%" + filter + "%";
+        }
+        else
+        {
+            recs = GetAllNascimentos(db, id).ToList();
+        }
+        
+        recordsTotal = recs.Count();
+        foreach (var i in recs.OrderBy(x => x.numlivro).ThenBy(x => x.pagina)
+                     .Skip((initialPage * pageSize)).Take(pageSize))
+        {
+            recTB.Add(i);
+        }
+        recordsFiltered = recTB.Count();
+        return recTB;
+    }
+
+    public IEnumerable<Nascimento> GetAllNascimentos(string db, string livro)
+    {
+        using (var _db = new DBDapper().getCon)
+        {
+            return _db.Query<Nascimento>($"select * from {db}.nascimentos where numlivro=@livro;", new { livro });
         }
     }
 }

@@ -1,0 +1,49 @@
+@{
+    Layout = null;
+}
+
+<html lang="pt">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Ligth</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <!-- Font Awesome -->
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/sweetalert2/sweetalert2.css" rel="stylesheet"/>
+    <link href="~/css/loading.css" rel="stylesheet" />
+    <link href="~/lib/loading/loading.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/Ligth.styles.css" asp-append-version="true"/>
+</head>
+<body class="text-center">
+<h2 class="mt-5 mt-sm-4 mt-md-5 mt-lg-6 mt-xl-7">Migração Ligth</h2>
+<div class="d-flex justify-content-center">
+    <form class="form-control w-25" method="post" asp-action="Login" asp-antiforgery="true">
+        <label class="mt-4"><strong>Escolha um local</strong></label>
+        <select class="form-control select2" id="local" name="local" asp-items="@ViewBag.Locais"></select>
+        <input type="text" id="inputLogin" name="login" class="form-control mt-5" placeholder="Login" required="required" autofocus="autofocus"/>
+        <input type="password" id="inputSenha" name="senha" class="form-control mt-1" placeholder="Senha" required="required"/>
+        <button class="btn btn-secondary mt-4" type="submit">Acessar <i class="fas fa-sign-in-alt"></i></button>
+    </form>
+</div>
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2025 - Lavínea Tecnologia da Informação LTDA - Migração Ligth
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/font-awesome/js/all.min.js"></script>
+<script src="~/lib/sweetalert2/sweetalert2v11.js"></script>
+<script src="~/js/sweetproc.js"></script>
+<script src="~/lib/loading/loading.js"></script>
+<script src="~/js/msgtoast.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    const codigo = @TempData["Codigo"];
+    const msg = '@TempData["Mensagem"]';
+    Msgtoast(codigo,msg);
+</script>
+</body>
+</html>

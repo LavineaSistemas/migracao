@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Ligth.Dao
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    int idlocal = int.Parse(User.Claims.First(c => c.Type == "local").Value);
+    var local = new LocalDAO().GetNomeLocal(idlocal);
+    var nomeusuario = User.Claims.First(c => c.Type == "nomeusuario").Value;
+    var perfil = User.Claims.First(c => c.Type == "perfil").Value;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -8,6 +16,7 @@
     <!-- Font Awesome -->
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="~/lib/sweetalert2/sweetalert2.css" rel="stylesheet"/>
+    <link href="~/css/loading.css" rel="stylesheet" />
     <link href="~/lib/loading/loading.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/Ligth.styles.css" asp-append-version="true"/>
@@ -26,11 +35,30 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    @* <li class="nav-item"> *@
-                    @*     <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="ListarUsuarios">Usuários</a> *@
-                    @* </li> *@
+                    @if (perfil == "ADM")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="ListarUsuarios">Usuários</a>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Nascimento" asp-action="ListarNascimento" onclick="msgalert()">Nascimentos</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
+                <ul class="navbar-nav flex-grow-0">
+                    <li class="nav-item">
+                        <h6 style="margin-right: 10em">@local</h6>
+                    </li>
+                    <li class="nav-item">
+                        <h6 style="margin-right: 10em"><i class="fas fa-user"></i><span> @nomeusuario</span></h6>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-light" asp-controller="Login" asp-action="EncerraSessao"><i class="fas fa-sign-out-alt"></i><span> Sair</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-light" type="button" onclick="troca()"><i class="fas fa-key"></i><span> Trocar senha</span></button>
                     </li>
                 </ul>
             </div>
@@ -39,6 +67,7 @@
 </header>
 <div class="container">
     <main role="main" class="pb-3">
+        <partial name="_Alertas"/>
         @RenderBody()
     </main>
 </div>
@@ -56,6 +85,7 @@
 <script src="~/lib/loading/loading.js"></script>
 <script src="~/js/msgtoast.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/troca.js"></script>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

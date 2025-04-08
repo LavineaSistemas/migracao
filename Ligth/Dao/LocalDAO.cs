@@ -22,4 +22,12 @@ public class LocalDAO
                 .Select(x => new SelectListItem { Text = x.Schema, Value = x.Id.ToString() });
         }
     }
+
+    public string GetNomeLocal(int id)
+    {
+        using (var _db = new DBDapper().getCon)
+        {
+            return _db.QueryFirstOrDefault<string>("select schema from adm.locais where id = @id;", new { id });
+        }
+    }
 }

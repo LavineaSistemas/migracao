@@ -2,69 +2,57 @@
     ViewData["Title"] = ViewBag.Titulo;
 }
 
+<link href="~/lib/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
 <div class="card">
     <div class="card-header">
         <div class="card-title">@ViewBag.Titulo</div>
-        <div class="d-flex float-end">
-            <button class="btn btn-info" onclick="cadastrar()" title="Adicionar Usuário"><i class="fa fa-plus-square"></i></button>
-        </div>
     </div>
     <div class="card-body">
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <select class="select2 mr-5" id="local" asp-items="@ViewBag.Locais"></select>
+                        <select class="form-control select2 mr-5" id="livro" asp-items="@ViewBag.Livros"></select>
                     </div>
-                    <div class="col-4">
-                        <a class="btn btn-info" id="carregar" href="" onclick="msgalert()"> Carregar colunas</a>
+                    <div class="col-2">
+                        <button class="btn bg-info" id="btnLivro"><i class="fas fa-search"></i><span> Pesquisar</span></button>
                     </div>
+                    @if (ViewBag.Perfil == "ADM")
+                    {
+                        <div class="col-4">
+                            <a class="btn btn-info" id="carregar" href="" onclick="msgalert()"> Carregar colunas</a>
+                        </div>
+                    }
                 </div>
                 
             </div>
         </div>
-        <table class="table table-bordered table-striped">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>CPF</th>
-                <th>Nome</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @if (Model != null)
-            {
-                @foreach (var i in Model)
-                {
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered table-striped mt-2" id="datanascimento">
+                    <thead>
                     <tr>
-                        <td>@i.id</td>
-                        <td>@i.cpf</td>
-                        <td>@i.nome</td>
-                        <td align="center">
-                            <div class="btn-group">
-                                <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="true">
-                                    <i class="fa fa-cogs"></i>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Usuarios" asp-action="FormInfoCart" asp-route-id="@i.id" asp-route-mode="1" data-toggle="tooltip" data-placement="top" title="Editar">
-                                            <i class="fa fa-edit"></i>
-                                            <span>Editar</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
+                        <th>Id</th>
+                        <th>Livro</th>
+                        <th>Folha</th>
+                        <th>Termo</th>
+                        <th>Nome Nascido</th>
+                        <th>Data Registro</th>
+                        <th>Ações</th>
                     </tr>
-                }
-            }
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 @section Scripts {
+    <script src="~/lib/datatables/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/dataTables.bootstrap4.js"></script>
+    <script src="~/js/datanascimento.js"></script>
     <script>
         @if (ViewBag.MsgToast != null)
         {

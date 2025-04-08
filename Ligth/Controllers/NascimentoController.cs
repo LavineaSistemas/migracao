@@ -1,10 +1,12 @@
 using System.Text;
 using Ligth.Dao;
 using Ligth.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ligth.Controllers;
 
+[Authorize]
 public class NascimentoController : Controller
 {
     private readonly ILogger<NascimentoController> _logger;
@@ -16,9 +18,25 @@ public class NascimentoController : Controller
     
     public IActionResult ListarNascimento()
     {
+        try
+        {
+            ViewBag.Titulo = "Lista de Nascimentos";
+            int idlocal = int.Parse(User.Claims.First(c => c.Type == "local").Value);
+            string schema = new LocalDAO().GetNomeLocal(idlocal);
+            ViewBag.Perfil = User.Claims.First(c => c.Type == "perfil").Value;
+            ViewBag.Livros = new NascimentoDAO().GetAllLivros(schema);
+            return View();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            TempData["Codigo"] = 2;
+            TempData["Mensagem"] = e.Message;
+            return RedirectToAction("Index", "Home");
+        }
+        
         ViewBag.Locais = new LocalDAO().GetAllLocais();
-        ViewBag.Titulo = "Lista de Nascimentos";
-        return View();
+        
     }
     
     public IActionResult CarregarColunas(int idLocal)
@@ -81,41 +99,18 @@ public class NascimentoController : Controller
         return View("ListarNascimento");
     }
 
-    public IActionResult ImportarNascimento()
+    [HttpPost]
+    [AllowAnonymous]
+    public IActionResult GetNascimentos(int? length, int? draw, int? start)
     {
-        var msgToast = new MsgToast();
-        try
-        {
-            var local = new LocalDAO().GetLocal(1);
-            var dir = new DiretorioDAO().getDiretorioNascimento(local.Id);
-            using (StreamReader leitor = new StreamReader(dir))
-            {
-                // string linha;
-                // while ((linha = leitor.ReadLine()) != null)
-                // {
-                //     var id = int.Parse(linha.Substring(1,8));
-                //     var coluna = linha.Substring(10,15).TrimEnd();
-                //     var dado = linha.Substring(26, 500).TrimEnd();
-                //     var isRegistro = new NascimentoDAO().achouRegistro(local.Schema, id);
-                //     if (!isRegistro)
-                //     {
-                //         new NascimentoDAO().addRegistro(local.Schema, id);
-                //     }
-                //     else
-                //     {
-                //         var nascimento = new Nascimento();
-                //     }
-                //     var isColuna = new NascimentoDAO().achouColuna(local.Schema, coluna);
-                // }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            msgToast.Tipo = 2;
-            msgToast.Mensagem = e.Message;
-        }
-        ViewBag.Message = msgToast;
-        return View("ListarNascimento");
+        var id = Request.Form["id"].FirstOrDefault();
+        var search = Request.Form["search[value]"].FirstOrDefault();
+        int recordsTotal = 0;
+        int recordsFiltered = 0;
+        start = start.HasValue ? start / 100 : 0;
+        int idlocal = int.Parse(User.Claims.First(c => c.Type == "local").Value);
+        string schema = new LocalDAO().GetNomeLocal(idlocal);
+        var data = new NascimentoDAO().ListaNascimentoFiltro(search, start.Value, length ?? 100, out recordsTotal, out recordsFiltered, id, schema);
+        return Json(new { draw, recordsFiltered = recordsTotal, recordsTotal, data });
     }
 }
