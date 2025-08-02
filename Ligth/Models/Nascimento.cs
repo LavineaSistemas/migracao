@@ -3,9 +3,85 @@ namespace Ligth.Models;
 public class Nascimento
 {
     public int id { get; set; }
+    public string nome { get; set; }
+    public string data { get; set; }
+    public string hora { get; set; }
+    public string local { get; set; }
+    public string cidade { get; set; }
+    public string estado { get; set; }
+    public string sexo { get; set; }
+    public string gemeo { get; set; }
+    public string nomdec { get; set; }
+    public string enddec { get; set; }
+    public string natdec { get; set; }
+    public string prodec { get; set; }
+    public string idadec { get; set; }
+    public string idadecext { get; set; }
+    public string estcivdec { get; set; }
+    public string idedec { get; set; }
+    public string pai { get; set; }
+    public string natpai { get; set; }
+    public string propai { get; set; }
+    public string estcivpai { get; set; }
+    public string mae { get; set; }
+    public string natmae { get; set; }
+    public string promae { get; set; }
+    public string estcivmae { get; set; }
+    public string idamaepar { get; set; }
+    public string idamaeparext { get; set; }
+    public string avopat { get; set; }
+    public string avopater { get; set; }
+    public string avomat { get; set; }
+    public string avomater { get; set; }
+    public string livro { get; set; }
     public string numlivro { get; set; }
     public string pagina { get; set; }
-    public string nroregistro { get; set; }
-    public string nome { get; set; }
     public string datreg { get; set; }
+    public string nroregistro { get; set; }
+    public string diacal { get; set; }
+    public string mescal { get; set; }
+    public string anocal { get; set; }
+    public string diaext { get; set; }
+    public string mesext { get; set; }
+    public string anoext { get; set; }
+    public string diareg { get; set; }
+    public string mesreg { get; set; }
+    public string anoreg { get; set; }
+    public string diaregext { get; set; }
+    public string mesregext { get; set; }
+    public string anoregext { get; set; }
+    public string horacal { get; set; }
+    public string mincal { get; set; }
+    public string horaext { get; set; }
+    public string obs1 { get; set; }
+    public string pritest { get; set; }
+    public string pritestnat { get; set; }
+    public string pritestpro { get; set; }
+    public string pritestciv { get; set; }
+    public string segtest { get; set; }
+    public string segtestnat { get; set; }
+    public string segtestpro { get; set; }
+    public string segtestciv { get; set; }
+    public string comarca { get; set; }
+    public string oficial { get; set; }
+    public string localcas { get; set; }
+    public string livrocas { get; set; }
+    public string follivcas { get; set; }
+    public string nocasam { get; set; }
+    public string datasegvia { get; set; }
+    public string diacalvia { get; set; }
+    public string mescalvia { get; set; }
+    public string anocalvia { get; set; }
+    public string mesextvia { get; set; }
+    public string idadepai { get; set; }
+    public string idadepaiext { get; set; }
+    public string obs2 { get; set; }
+    public string obs3 { get; set; }
+    public string minext { get; set; }
+    public string localnasc { get; set; }
+    public string munreg { get; set; }
+    public string matricula { get; set; }
+    public string averbacao { get; set; }
+    public string dn { get; set; }
+    public string livro2 { get; set; }
 }
