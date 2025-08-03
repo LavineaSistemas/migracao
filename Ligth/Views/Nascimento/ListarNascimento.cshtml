@@ -21,7 +21,7 @@
                     @if (ViewBag.Perfil == "ADM")
                     {
                         <div class="col-4">
-                            <a class="btn btn-info" id="carregar" href="" onclick="msgalert()"> Carregar colunas</a>
+                            <a class="btn btn-info" id="carregar" asp-action="CarregarColunas" asp-route-idLocal="@ViewBag.IdLocal" onclick="msgalert()"> Carregar colunas</a>
                         </div>
                     }
                 </div>

@@ -25,6 +25,7 @@ public class NascimentoController : Controller
             string schema = new LocalDAO().GetNomeLocal(idlocal);
             ViewBag.Perfil = User.Claims.First(c => c.Type == "perfil").Value;
             ViewBag.Livros = new NascimentoDAO().GetAllLivros(schema);
+            ViewBag.IdLocal = idlocal;
             return View();
         }
         catch (Exception e)
