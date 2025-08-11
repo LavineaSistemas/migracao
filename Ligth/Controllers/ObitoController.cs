@@ -67,6 +67,11 @@ public class ObitoController : Controller
                                 addRegistro = new RegistroDAO().addRegistro(local.Schema, tabela, id);
                             }
                             var addColuna = false;
+                            if (coluna == "do")
+                            {
+                                coluna = "doo";
+                            }
+                            
                             if (!colunas.Contains(coluna))
                             {
                                 addColuna = new RegistroDAO().addColuna(local.Schema, tabela, coluna);
