@@ -37,6 +37,8 @@ public class HomeController : Controller
         var perfil = User.Claims.First(c => c.Type == "perfil").Value;
         if (perfil == "ADM")
         {
+            int idlocal = int.Parse(User.Claims.First(c => c.Type == "local").Value);
+            ViewBag.IdLocal = idlocal;
             return View();
         }
         else

@@ -5,6 +5,14 @@ namespace Ligth.Controllers;
 
 public class RegistroDAO
 {
+    public int getIndice(string db, string coluna)
+    {
+        using (var _db = new DBDapper().getCon)
+        {
+            return _db.QueryFirst<int>($"select {coluna} from {db}.controle_registro where id=1;");
+        }
+    }
+    
     public bool addRegistro(string db, string tb, int id)
     {
         var realizou = false;
