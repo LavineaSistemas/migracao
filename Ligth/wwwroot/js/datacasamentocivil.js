@@ -13,7 +13,7 @@ $('#btnLivro').click(function () {
 });
 
 function CarregaTabela(livro) {
-    table = $('#datanascimento').DataTable({
+    table = $('#datacasamento').DataTable({
         "pageLength": '100',
         "processing": true,
         "serverSide": true,
