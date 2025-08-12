@@ -55,10 +55,10 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Casamento" asp-action="ListarCasamentoReligioso" onclick="msgalert()">Casamentos Religiosos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Casamento" asp-action="ListarCasamentoCivil" onclick="msgalert()">Óbitos</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Obito" asp-action="ListarObitos" onclick="msgalert()">Óbitos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Casamento" asp-action="ListarCasamentoCivil" onclick="msgalert()">Natimortos</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Obito" asp-action="ListarCasamentoCivil" onclick="msgalert()">Natimortos</a>
                     </li>
                 </ul>
             </div>
@@ -110,6 +110,6 @@
 {
     public string GetVersion()
     {
-        return "1.2.0.2";
+        return "1.3.0.2";
     }
 }

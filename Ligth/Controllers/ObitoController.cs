@@ -6,21 +6,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ligth.Controllers;
 
-[Authorize]
-public class CasamentoController : Controller
+public class ObitoController : Controller
 {
-    private readonly ILogger<CasamentoController> _logger;
-    
-    public CasamentoController(ILogger<CasamentoController> logger)
+    private readonly ILogger<ObitoController> _logger;
+
+    public ObitoController(ILogger<ObitoController> logger)
     {
         _logger = logger;
     }
-    
-    public IActionResult ListarCasamentoCivil()
+
+    public IActionResult ListarObitos()
     {
         try
         {
-            ViewBag.Titulo = "Lista de Casamentos Civis";
+            ViewBag.Titulo = "Lista de Óbitos";
             int idlocal = int.Parse(User.Claims.First(c => c.Type == "local").Value);
             string schema = new LocalDAO().GetNomeLocal(idlocal);
             ViewBag.Perfil = User.Claims.First(c => c.Type == "perfil").Value;
@@ -37,21 +36,21 @@ public class CasamentoController : Controller
         }
     }
     
-    public IActionResult CarregarColunasCivil(int idLocal)
+    public IActionResult CarregarColunasObito(int idLocal)
     {
         var msgToast = new MsgToast();
-        var tabela = "casamentoscivis";
+        var tabela = "obitos";
         try
         {
             var local = new LocalDAO().GetLocal(idLocal);
-            var dir = $"wwwroot/arquivos/{local.Schema}/CASCIV.TXT";
+            var dir = $"wwwroot/arquivos/{local.Schema}/obito.txt";
             _logger.LogInformation($"Base de dados: {local.Schema} - Diretorio arquivo: {dir}");
             using (StreamReader leitor = new StreamReader(dir, Encoding.GetEncoding("ISO-8859-1")))
             {
                 string linha;
                 var idaux = 0;
                 var colunas = new List<string>();
-                var indice = new CasamentoCivilDAO().getIndice(local.Schema);
+                var indice = new RegistroDAO().getIndice(local.Schema, "obito");
                 while ((linha = leitor.ReadLine()) != null)
                 {
                     if (linha != "!C25")
@@ -68,6 +67,11 @@ public class CasamentoController : Controller
                                 addRegistro = new RegistroDAO().addRegistro(local.Schema, tabela, id);
                             }
                             var addColuna = false;
+                            if (coluna == "do")
+                            {
+                                coluna = "doo";
+                            }
+                            
                             if (!colunas.Contains(coluna))
                             {
                                 addColuna = new RegistroDAO().addColuna(local.Schema, tabela, coluna);
@@ -95,12 +99,12 @@ public class CasamentoController : Controller
         }
         ViewBag.MsgToast = msgToast;
         ViewBag.Locais = new LocalDAO().GetAllLocais();
-        return RedirectToAction("ListarCasamentoCivil");
+        return RedirectToAction("ListarObitos");
     }
     
     [HttpPost]
     [AllowAnonymous]
-    public IActionResult GetCasamentoCivil(int? length, int? draw, int? start)
+    public IActionResult GetObitos(int? length, int? draw, int? start)
     {
         var id = Request.Form["id"].FirstOrDefault();
         var search = Request.Form["search[value]"].FirstOrDefault();
@@ -109,7 +113,7 @@ public class CasamentoController : Controller
         start = start.HasValue ? start / 100 : 0;
         int idlocal = int.Parse(User.Claims.First(c => c.Type == "local").Value);
         string schema = new LocalDAO().GetNomeLocal(idlocal);
-        var data = new CasamentoCivilDAO().ListaCasamentoCivilFiltro(search, start.Value, length ?? 100, out recordsTotal, out recordsFiltered, id, schema);
+        var data = new ObitoDAO().ListaObitoFiltro(search, start.Value, length ?? 100, out recordsTotal, out recordsFiltered, id, schema);
         return Json(new { draw, recordsFiltered = recordsTotal, recordsTotal, data });
     }
     
