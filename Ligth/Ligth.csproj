@@ -15,9 +15,4 @@
       </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Utils\" />
-      <Folder Include="wwwroot\arquivos\santarosa\" />
-    </ItemGroup>
-
 </Project>

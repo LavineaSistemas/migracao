@@ -41,9 +41,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="ListarUsuarios">Usuários</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Painel">Painel</a>
+                        </li>
                     }
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Nascimento" asp-action="ListarNascimento" onclick="msgalert()">Nascimentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Casamento" asp-action="ListarCasamentoCivil" onclick="msgalert()">Casamentos Civis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Casamento" asp-action="ListarCasamentoReligioso" onclick="msgalert()">Casamentos Religiosos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Obito" asp-action="ListarObitos" onclick="msgalert()">Óbitos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Obito" asp-action="ListarCasamentoCivil" onclick="msgalert()">Natimortos</a>
                     </li>
                 </ul>
             </div>
@@ -95,6 +110,6 @@
 {
     public string GetVersion()
     {
-        return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        return "1.3.0.2";
     }
 }

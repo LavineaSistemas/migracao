@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = ViewBag.Titulo;
+}
+
+<link href="~/lib/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">@ViewBag.Titulo</div>
+    </div>
+    <div class="card-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <select class="form-control select2 mr-5" id="livro" asp-items="@ViewBag.Livros"></select>
+                    </div>
+                    <div class="col-2">
+                        <button class="btn bg-info" id="btnLivro"><i class="fas fa-search"></i><span> Pesquisar</span></button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered table-striped mt-2" id="datacasamento">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Livro</th>
+                        <th>Folha</th>
+                        <th>Termo</th>
+                        <th>Nome Noivo</th>
+                        <th>Nome Noiva</th>
+                        <th>Data Registro</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/lib/datatables/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/dataTables.bootstrap4.js"></script>
+    <script src="~/js/datacasamentocivil.js"></script>
+    <script>
+        @if (ViewBag.MsgToast != null)
+        {
+            @:console.log = 'oi';
+        }
+        
+        $('#local').change(function (){
+            var valorSelecionado = this.value;
+            var botao = $('#carregar');
+            var hrefCarrega ='/Casamento/CarregarColunasCivil?idLocal=';
+            var novoHrefCarrega = hrefCarrega + valorSelecionado;
+            botao.attr('href', novoHrefCarrega);
+            console.log(novoHrefCarrega);
+        });
+    </script>
+}
