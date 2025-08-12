@@ -10,8 +10,8 @@ public class ObitoDAO
     {
         using (var _db = new DBDapper().getCon)
         {
-            return _db.Query<Obito>($"select numero from {db}.obitos group by numero order by numero;")
-                .Select(x => new SelectListItem { Text = x.numero, Value = x.numero });
+            return _db.Query<Obito>($"select numliv from {db}.obitos group by numliv order by numliv;")
+                .Select(x => new SelectListItem { Text = x.numliv, Value = x.numliv });
         }
     }
     
@@ -31,7 +31,7 @@ public class ObitoDAO
         }
         
         recordsTotal = recs.Count();
-        foreach (var i in recs.OrderBy(x => x.numero).ThenBy(x => x.pagina)
+        foreach (var i in recs.OrderBy(x => x.numliv).ThenBy(x => x.numpag)
                      .Skip((initialPage * pageSize)).Take(pageSize))
         {
             recTB.Add(i);
@@ -44,7 +44,7 @@ public class ObitoDAO
     {
         using (var _db = new DBDapper().getCon)
         {
-            return _db.Query<Obito>($"select * from {db}.obitos where numero=@livro;", new { livro });
+            return _db.Query<Obito>($"select * from {db}.obitos where numliv=@livro;", new { livro });
         }
     }
 }

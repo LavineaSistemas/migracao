@@ -104,7 +104,7 @@ public class ObitoController : Controller
     
     [HttpPost]
     [AllowAnonymous]
-    public IActionResult GetObito(int? length, int? draw, int? start)
+    public IActionResult GetObitos(int? length, int? draw, int? start)
     {
         var id = Request.Form["id"].FirstOrDefault();
         var search = Request.Form["search[value]"].FirstOrDefault();
